@@ -53,7 +53,60 @@ def get_examples(word: str,
 
 
 def main() -> None:
-    pass
+    parser = argparse.ArgumentParser(
+        description="Get examples of the word usage. "
+                    "It might be word in English or in Russian."
+    )
+    parser.add_argument(
+        'word', metavar="Word", type=str,
+    )
+    parser.add_argument(
+        '-c', '--corpus',
+        metavar='Corpus',
+        type=str,
+        choices=['parallel', 'main'],
+        default='main'
+    )
+    parser.add_argument(
+        '-l', '--language',
+        metavar='Language',
+        type=str,
+        default='en',
+        choices=['en', 'fr', 'ger'],
+        dest='lang'
+    )
+    parser.add_argument(
+        '--count',
+        metavar='Count',
+        type=int,
+        default=10
+    )
+    parser.add_argument(
+        '-level', '--log-level',
+        metavar="Logging level",
+        type=str,
+        default='warning',
+        choices=['debug', 'info', 'warning', 'error', 'critical'],
+        dest="level"
+    )
+
+    args = parser.parse_args()
+
+    rnc.set_file_handler_level('CRITICAL')
+    rnc.set_stream_handler_level(args.level.upper())
+
+    lang = args.lang
+
+    if args.corpus == 'main':
+        func = get_russian
+    else:
+        func = get_parallel
+        func.__defaults__ = (lang, )
+
+    word = args.word
+    count = args.count
+
+    get_examples(word, func, count)
 
 
 if __name__ == "__main__":
