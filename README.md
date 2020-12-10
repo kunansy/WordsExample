@@ -1,5 +1,7 @@
 # Word's Examples
 
-Get sentences with the word in Russian and in English.
+Get examples of the word usage from RNC: sentences with the word in Russian, 
+in English, in French, in German etc.
 
-Use API for RNC to do it, for English show both original and translated sentences.
+Use API for RNC to do it, for not Russian sentences show both original 
+and translated sentences.
