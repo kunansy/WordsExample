@@ -11,6 +11,21 @@ def get(word: str,
         count: int,
         corpus,
         **kwargs) -> CORPORA:
+    """
+    Get examples from the Corpus.
+
+    Request count // 10 pages with dpp = 5 and
+     random sort.
+
+    There are >= count of examples than requested.
+
+    :param word: str, word to find its usage.
+    :param count: int, count of examples.
+    :param corpus: obj, Corpus class from where get examples.
+    :param kwargs: any kwargs for Corpus class.
+    :return: Corpus object with got examples.
+    :exception: all the same as Corpus.
+    """
     pages = count // 10 or 1
     corp = corpus(word, pages, dpp=5, sort='random', **kwargs)
     corp.request_examples()
@@ -20,6 +35,15 @@ def get(word: str,
 def get_russian(word: str,
                 count: int,
                 **kwargs) -> rnc.MainCorpus:
+    """
+    Get examples from the MainCorpus.
+
+    :param word: str, Russian word to find its usage.
+    :param count: int, count of examples.
+    :param kwargs: any kwargs for Corpus class.
+    :return: MainCorpus object with got examples.
+    :exception: all the same as Corpus.
+    """
     return get(word, count, rnc.MainCorpus, **kwargs)
 
 
@@ -27,6 +51,16 @@ def get_parallel(word: str,
                  count: int,
                  language: str = 'en',
                  **kwargs) -> rnc.ParallelCorpus:
+    """
+    Get examples from the ParallelCorpus.
+
+    :param word: str, word to find its usage.
+    :param count: int, count of examples.
+    :param language: str, lang of Corpus.
+    :param kwargs: any kwargs for Corpus class.
+    :return: ParalellCorpus object with got examples.
+    :exception: all the same as Corpus.
+    """
     return get(word, count, rnc.ParallelCorpus,
                subcorpus=rnc.subcorpus[language], **kwargs)
 
@@ -35,6 +69,16 @@ def get_examples(word: str,
                  func,
                  count: int,
                  **kwargs) -> None:
+    """
+    Get examples from the Corpus, sort them by length of
+    Russian text and print very count of examples.
+
+    :param word: str, word to find its usage.
+    :param func: func which gets examples from the Corpus.
+    :param count: int, count of examples.
+    :param kwargs: any kwargs for Corpus class.
+    :return: None.
+    """
     try:
         corp = func(word, count, **kwargs)
     except ValueError:
@@ -66,6 +110,12 @@ MARKER = {
 
 
 def main() -> None:
+    """
+    Parse command args, turn off file handler of RNC logger,
+    get and print examples according to command line args.
+
+    :return: None.
+    """
     parser = argparse.ArgumentParser(
         description="Get examples of the word usage. "
                     "It might be word in English or in Russian."
