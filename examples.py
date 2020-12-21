@@ -10,33 +10,35 @@ CORPORA = Union[rnc.MainCorpus, rnc.ParallelCorpus]
 def get(word: str,
         count: int,
         corpus,
-        **params) -> CORPORA:
+        **kwargs) -> CORPORA:
     pages = count // 10 or 1
-    corp = corpus(word, pages, marker=str.upper,
-                  dpp=5, sort='random', **params)
+    corp = corpus(word, pages, dpp=5, sort='random', **kwargs)
     corp.request_examples()
     return corp
 
 
 def get_russian(word: str,
-                count: int) -> rnc.MainCorpus:
-    return get(word, count, rnc.MainCorpus)
+                count: int,
+                **kwargs) -> rnc.MainCorpus:
+    return get(word, count, rnc.MainCorpus, **kwargs)
 
 
 def get_parallel(word: str,
                  count: int,
-                 language: str = 'en') -> rnc.ParallelCorpus:
+                 language: str = 'en',
+                 **kwargs) -> rnc.ParallelCorpus:
     return get(word, count, rnc.ParallelCorpus,
-               subcorpus=rnc.subcorpus[language])
+               subcorpus=rnc.subcorpus[language], **kwargs)
 
 
 def get_examples(word: str,
                  func,
-                 count: int) -> None:
+                 count: int,
+                 **kwargs) -> None:
     try:
-        corp = func(word, count)
+        corp = func(word, count, **kwargs)
     except ValueError:
-        corp = func(word, 1)
+        corp = func(word, 1, **kwargs)
 
     if isinstance(corp, rnc.MainCorpus):
         corp.sort_data(key=lambda example: len(example.txt))
@@ -105,20 +107,18 @@ def main() -> None:
     rnc.set_file_handler_level('CRITICAL')
     rnc.set_stream_handler_level(args.level.upper())
 
-    lang = args.lang
-
     if args.corpus == 'main':
         func = get_russian
     else:
         func = get_parallel
-        func.__defaults__ = (lang, )
 
     if args.marker == 'upper':
         marker = str.upper
     else:
         marker = lambda word: '***'
 
-    get_examples(word, func, count)
+    get_examples(
+        args.word, func, args.count, marker=marker, language=args.lang)
 
 
 if __name__ == "__main__":
