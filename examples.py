@@ -55,6 +55,16 @@ def get_examples(word: str,
             print()
 
 
+FUNC = {
+    'main': get_russian,
+    'parallel': get_parallel
+}
+MARKER = {
+    'upper': str.upper,
+    'hide': lambda word: '***'
+}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Get examples of the word usage. "
@@ -109,15 +119,8 @@ def main() -> None:
     rnc.set_file_handler_level('CRITICAL')
     rnc.set_stream_handler_level(args.level.upper())
 
-    if args.corpus == 'main':
-        func = get_russian
-    else:
-        func = get_parallel
-
-    if args.marker == 'upper':
-        marker = str.upper
-    else:
-        marker = lambda word: '***'
+    func = FUNC[args.corpus]
+    marker = MARKER[args.marker]
 
     get_examples(
         args.word, func, args.count, marker=marker, language=args.lang)
