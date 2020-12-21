@@ -37,9 +37,10 @@ def get_examples(word: str,
         corp = func(word, count)
     except ValueError:
         corp = func(word, 1)
-    try:
+
+    if isinstance(corp, rnc.MainCorpus):
         corp.sort_data(key=lambda example: len(example.txt))
-    except AttributeError:
+    elif isinstance(corp, rnc.ParallelCorpus):
         corp.sort_data(key=lambda example: len(example.ru))
 
     for ex in corp[:count]:
