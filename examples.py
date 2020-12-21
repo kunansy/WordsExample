@@ -155,7 +155,7 @@ def main() -> None:
         metavar="Level of stream handler of RNC logger. Warning by default.",
         type=str,
         default='warning',
-        choices=('debug', 'info', 'warning', 'error', 'critical'),
+        choices=('notset', 'debug', 'info', 'warning', 'error', 'critical'),
         dest="level"
     )
     parser.add_argument(
