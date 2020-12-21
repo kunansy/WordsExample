@@ -75,7 +75,9 @@ def main() -> None:
         metavar='Choose the lang of the examples; all langs from RNC possible',
         type=str,
         default='en',
-        choices=['en', 'fr', 'ger'],
+        choices=('en', 'arm', 'bas', 'bel', 'bul', 'bur', 'sp', 'it', 'ch',
+                 'lat', 'lit', 'ger', 'pol', 'ukr', 'fr', 'fin', 'cz', 'sw',
+                 'es'),
         dest='lang'
     )
     parser.add_argument(
