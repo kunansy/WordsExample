@@ -70,7 +70,7 @@ def main() -> None:
     )
     parser.add_argument(
         '-l', '--language',
-        metavar='Language',
+        metavar='Choose the lang of the examples; all langs from RNC possible',
         type=str,
         default='en',
         choices=['en', 'fr', 'ger'],
@@ -78,7 +78,7 @@ def main() -> None:
     )
     parser.add_argument(
         '--count',
-        metavar='Count',
+        metavar='Count of examples',
         type=int,
         default=10
     )
