@@ -46,7 +46,7 @@ def get_examples(word: str,
         corp.sort_data(key=lambda example: len(example.ru))
 
     for ex in corp[:count]:
-        if isinstance(ex.txt, dict):
+        if isinstance(ex, rnc.ParallelExample):
             for lang, text in ex.txt.items():
                 print(f"{lang}: {text}")
             print()
@@ -67,7 +67,7 @@ def main() -> None:
         '-c', '--corpus',
         metavar='Corpus',
         type=str,
-        choices=['parallel', 'main'],
+        choices=('parallel', 'main'),
         default='main'
     )
     parser.add_argument(
@@ -91,7 +91,7 @@ def main() -> None:
         metavar="Logging level",
         type=str,
         default='warning',
-        choices=['debug', 'info', 'warning', 'error', 'critical'],
+        choices=('debug', 'info', 'warning', 'error', 'critical'),
         dest="level"
     )
     parser.add_argument(
@@ -99,7 +99,7 @@ def main() -> None:
         metavar='Choose how to mark found wordforms; upper of hide',
         type=str,
         default='upper',
-        choices=['upper', 'hide'],
+        choices=('upper', 'hide'),
         dest='marker',
         required=False
     )
@@ -125,4 +125,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
