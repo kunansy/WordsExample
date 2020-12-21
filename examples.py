@@ -118,21 +118,25 @@ def main() -> None:
     """
     parser = argparse.ArgumentParser(
         description="Get examples of the word usage. "
-                    "It might be word in English or in Russian."
+                    "It might be word in Russian or original language."
     )
     parser.add_argument(
-        'word', metavar="Word", type=str,
+        'word',
+        metavar="Word(s) to find sentences with it (them).",
+        type=str,
     )
     parser.add_argument(
         '-c', '--corpus',
-        metavar='Corpus',
+        metavar="Corpus where search word's examples; "
+                "parallel and main possible. Main by default.",
         type=str,
         choices=('parallel', 'main'),
         default='main'
     )
     parser.add_argument(
         '-l', '--language',
-        metavar='Choose the lang of the examples; all langs from RNC possible',
+        metavar="Choose the language of the examples; "
+                "all languages from RNC possible. English by default.",
         type=str,
         default='en',
         choices=('en', 'arm', 'bas', 'bel', 'bul', 'bur', 'sp', 'it', 'ch',
@@ -142,13 +146,13 @@ def main() -> None:
     )
     parser.add_argument(
         '--count',
-        metavar='Count of examples',
+        metavar='Count of examples ot get. 10 by default.',
         type=int,
         default=10
     )
     parser.add_argument(
         '-level', '--log-level',
-        metavar="Logging level",
+        metavar="Level of stream handler of RNC logger. Warning by default.",
         type=str,
         default='warning',
         choices=('debug', 'info', 'warning', 'error', 'critical'),
@@ -156,7 +160,8 @@ def main() -> None:
     )
     parser.add_argument(
         '--marker',
-        metavar='Choose how to mark found wordforms; upper of hide',
+        metavar="Choose how to mark found wordforms; "
+                "upper or hide, upper by default.",
         type=str,
         default='upper',
         choices=('upper', 'hide'),
