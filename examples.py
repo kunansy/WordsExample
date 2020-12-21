@@ -90,6 +90,15 @@ def main() -> None:
         choices=['debug', 'info', 'warning', 'error', 'critical'],
         dest="level"
     )
+    parser.add_argument(
+        '--marker',
+        metavar='Choose how to mark found wordforms; upper of hide',
+        type=str,
+        default='upper',
+        choices=['upper', 'hide'],
+        dest='marker',
+        required=False
+    )
 
     args = parser.parse_args()
 
@@ -104,8 +113,10 @@ def main() -> None:
         func = get_parallel
         func.__defaults__ = (lang, )
 
-    word = args.word
-    count = args.count
+    if args.marker == 'upper':
+        marker = str.upper
+    else:
+        marker = lambda word: '***'
 
     get_examples(word, func, count)
 
