@@ -62,7 +62,7 @@ def get_parallel(word: str,
     :exception: all the same as Corpus.
     """
     return get(word, count, rnc.ParallelCorpus,
-               subcorpus=rnc.subcorpus[language], **kwargs)
+               mycorp=rnc.mycorp[language], **kwargs)
 
 
 def get_examples(word: str,
