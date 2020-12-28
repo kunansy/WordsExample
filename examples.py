@@ -104,7 +104,9 @@ FUNC = {
 }
 MARKER = {
     'upper': str.upper,
-    'hide': lambda word: '***'
+    'hide': lambda word: '***',
+    'bold': lambda word: f"<b>{word}</b>",
+    'ubold': lambda word: f"<b>{word.upper()}</b>",
 }
 
 
@@ -160,11 +162,11 @@ def main() -> None:
     )
     parser.add_argument(
         '--marker',
-        metavar="Choose how to mark found wordforms; "
-                "upper or hide, upper by default.",
+        metavar="Choose how to mark found wordforms; upper, hide, bold or "
+                "ubold (upper and bold). upper by default.",
         type=str,
         default='upper',
-        choices=('upper', 'hide'),
+        choices=('upper', 'hide', 'bold', 'ubold'),
         dest='marker',
         required=False
     )
