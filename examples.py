@@ -93,10 +93,9 @@ def get_examples(word: str,
         if isinstance(ex, rnc.ParallelExample):
             for lang, text in ex.txt.items():
                 print(f"{lang}: {text}")
-            print()
         else:
             print(ex.txt)
-            print()
+        print()
 
 
 FUNC = {
@@ -124,6 +123,7 @@ def main() -> None:
         'word',
         metavar="Word(s) to find sentences with it (them).",
         type=str,
+        nargs="+"
     )
     parser.add_argument(
         '-c', '--corpus',
@@ -178,7 +178,8 @@ def main() -> None:
     marker = MARKER[args.marker]
 
     get_examples(
-        args.word, func, args.count, marker=marker, language=args.lang)
+        ' '.join(args.word), func, args.count,
+        marker=marker, language=args.lang)
 
 
 if __name__ == "__main__":
