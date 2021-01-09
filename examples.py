@@ -123,22 +123,21 @@ def main() -> None:
     )
     parser.add_argument(
         'word',
-        metavar="Word(s) to find sentences with it (them).",
+        help="Word(s) to find sentences with it (them).",
         type=str,
         nargs="+"
     )
     parser.add_argument(
         '-c', '--corpus',
-        metavar="Corpus where search word's examples; "
-                "parallel and main possible. Main by default.",
+        help="Corpus where search word's examples; Main by default.",
         type=str,
         choices=('parallel', 'main'),
-        default='main'
+        default='main',
+        dest='corpus'
     )
     parser.add_argument(
         '-l', '--language',
-        metavar="Choose the language of the examples; "
-                "all languages from RNC possible. English by default.",
+        help="Choose the language of the examples; English by default.",
         type=str,
         default='en',
         choices=('en', 'arm', 'bas', 'bel', 'bul', 'bur', 'sp', 'it', 'ch',
@@ -148,13 +147,14 @@ def main() -> None:
     )
     parser.add_argument(
         '--count',
-        metavar='Count of examples ot get. 10 by default.',
+        help='Count of examples ot get. 10 by default.',
         type=int,
-        default=10
+        default=10,
+        dest='count'
     )
     parser.add_argument(
         '-level', '--log-level',
-        metavar="Level of stream handler of RNC logger. Warning by default.",
+        help="Level of stream handler of RNC logger. Warning by default.",
         type=str,
         default='warning',
         choices=('notset', 'debug', 'info', 'warning', 'error', 'critical'),
@@ -162,8 +162,7 @@ def main() -> None:
     )
     parser.add_argument(
         '--marker',
-        metavar="Choose how to mark found wordforms; upper, hide, bold or "
-                "ubold (upper and bold). upper by default.",
+        help="Choose how to mark found wordforms; Upper by default.",
         type=str,
         default='upper',
         choices=('upper', 'hide', 'bold', 'ubold'),
@@ -186,3 +185,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
