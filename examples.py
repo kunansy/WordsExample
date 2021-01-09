@@ -6,6 +6,9 @@ import rnc
 
 CORPORA = Union[rnc.MainCorpus, rnc.ParallelCorpus]
 
+LEFT_RUS_BORDER, RIGHT_RUS_BORDER = ord('а'), ord('я')
+LEFT_ENG_BORDER, RIGHT_ENG_BORDER = ord('a'), ord('z')
+
 
 def get(word: str,
         count: int,
@@ -98,6 +101,52 @@ def get_examples(word: str,
         print()
 
 
+def min_letter_index(string: str) -> int:
+    """
+    :param string: str to work with.
+    :return: min index of letter symbol in the string;
+     -1 if the string is empty, 2000 if there's no letter symbol.
+    """
+    if not string:
+        return -1
+
+    return min(
+        ord(symbol.lower()) if symbol.isalpha() else 2_000
+        for symbol in string
+    )
+
+
+def max_letter_index(string: str) -> int:
+    """
+    :param string: str to work with.
+    :return: max index of letter symbol in the string;
+     -1 if the string is empty or there's no letter symbol.
+    """
+    if not string:
+        return -1
+
+    return max(
+        ord(symbol.lower()) if symbol.isalpha() else -1
+        for symbol in string
+    )
+
+
+def is_russian(string: str) -> bool:
+    """
+    :return: bool, whether the string is Russian.
+    """
+    return min_letter_index(string) >= LEFT_RUS_BORDER and \
+            max_letter_index(string) <= RIGHT_RUS_BORDER
+
+
+def is_english(string: str) -> bool:
+    """
+    :return: bool, whether the string is English.
+    """
+    return min_letter_index(string) >= LEFT_ENG_BORDER and \
+            max_letter_index(string) <= RIGHT_ENG_BORDER
+
+
 FUNC = {
     'main': get_russian,
     'parallel': get_parallel
@@ -129,10 +178,11 @@ def main() -> None:
     )
     parser.add_argument(
         '-c', '--corpus',
-        help="Corpus where search word's examples; Main by default.",
+        help="Corpus where search word's examples; If the word is "
+             "Russian use main, if it's English – use parallel.",
         type=str,
         choices=('parallel', 'main'),
-        default='main',
+        default=None,
         dest='corpus'
     )
     parser.add_argument(
@@ -175,8 +225,13 @@ def main() -> None:
     rnc.set_file_handler_level('CRITICAL')
     rnc.set_stream_handler_level(args.level.upper())
 
-    func = FUNC[args.corpus]
+    func = FUNC.get(args.corpus, None)
     marker = MARKER[args.marker]
+    word = ' '.join(args.word)
+
+    if is_english(word):
+        func = FUNC['parallel']
+    func = func or FUNC['main']
 
     get_examples(
         ' '.join(args.word), func, args.count,
