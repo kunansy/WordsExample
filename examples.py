@@ -96,11 +96,9 @@ def get_examples(word: str,
         if isinstance(ex, rnc.ParallelExample):
             for lang, text in ex.txt.items():
                 print(f"{lang}: {text}")
-            print(f"src: {ex.src}")
         else:
             print(f"txt: {ex.txt}")
-            print(f"src: {ex.src}")
-        print()
+        print(f"src: {ex.src}", end='\n\n')
 
 
 def min_letter_index(string: str) -> int:
